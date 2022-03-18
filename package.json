@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/TheWisePigeon/ARTificial-backend#readme",
   "dependencies": {
-    "cloudinary": "^1.28.1"
+    "body-parser": "^1.19.2",
+    "cloudinary": "^1.28.1",
+    "express": "^4.17.3"
   }
 }

@@ -1,5 +1,10 @@
+const express = require('express')
+const bp = require('body-parser')
 const cloudinary = require('cloudinary')
 const secrets = require('./secrets/secrets')
+const app = express()
+
+app.use(bp.urlencoded({ extended: true }))
 
 cloudinary.config({
     cloud_name: 'dbeaywnzl',
@@ -7,6 +12,27 @@ cloudinary.config({
     api_secret: secrets.api_secret
 });
 
-cloudinary.v2.uploader.upload("https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",
-    { public_id: "olympic_flag" },
-    function (error, result) { console.log(result); });
+function upload(title, url) {
+    cloudinary.v2.uploader.upload(url, { public_id: title }, function (error, result) {
+        console.log(result);
+    })
+}
+
+function get(title) {
+    
+}
+
+
+app.get('/', (req, res)=>{
+    res.sendFile(__dirname + "/pages/index.html")
+})
+
+
+app.post('/upload', (req, res)=>{
+
+})
+const port = process.env.PORT||5000
+
+app.listen(port, ()=>{
+    console.log(`App listening on port ${port}`);
+})
