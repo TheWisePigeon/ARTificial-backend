@@ -1,0 +1,22 @@
+{
+  "name": "artificial-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheWisePigeon/ARTificial-backend.git"
+  },
+  "author": "TheWisePigeon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheWisePigeon/ARTificial-backend/issues"
+  },
+  "homepage": "https://github.com/TheWisePigeon/ARTificial-backend#readme",
+  "dependencies": {
+    "cloudinary": "^1.28.1"
+  }
+}
