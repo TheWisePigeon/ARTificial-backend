@@ -2,8 +2,8 @@ const express = require('express')
 const bp = require('body-parser')
 const cloudinary = require('cloudinary')
 const fs = require('fs')
+const dotenv = require('dotenv').config()
 const fileUpload = require('express-fileupload')
-const secrets = require('./secrets/secrets')
 const mongoose = require('mongoose')
 const app = express()
 app.use(fileUpload({
@@ -12,7 +12,7 @@ app.use(fileUpload({
 
 
 //database stuff
-const dbString = `mongodb+srv://${secrets.dbUser}:${secrets.password}@artificial.5ha3m.mongodb.net/artificial?retryWrites=true&w=majority`
+const dbString = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@artificial.5ha3m.mongodb.net/artificial?retryWrites=true&w=majority`
 mongoose.connect(dbString, { useNewUrlParser: true } )
 const artworkSchema = new mongoose.Schema({
     title: String,
@@ -30,8 +30,8 @@ app.use(bp.urlencoded({
 
 cloudinary.config({
     cloud_name: 'dbeaywnzl',
-    api_key: secrets.api_key,
-    api_secret: secrets.api_secret
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
 });
 
 
