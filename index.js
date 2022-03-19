@@ -68,6 +68,20 @@ app.get('/', (req, res) => {
         }
 
     })
+
+
+app.get('/arts', (req, res)=>{
+
+    Artwork.find( (err, fruits)=>{
+        if(err){
+            res.send(err)
+        }else{
+            res.send(fruits)
+        }
+    } )
+
+
+})
 const port = process.env.PORT || 5000
 
 app.listen(port, () => {
