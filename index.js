@@ -36,7 +36,12 @@ cloudinary.config({
 
 async function upload(title, url) {
     cloudinary.v2.uploader.upload(url, { public_id: title }, function (error, result) {
-        return result;
+        if(error){
+            return error
+        }else{
+            return result
+        }
+        
     })
 }
 
@@ -52,7 +57,7 @@ app.get('/', (req, res)=>{
     if (req.files) {
         let artwork = req.files.artwork
         artwork.mv(__dirname + "/temp/" + artwork.name)
-        res.send("worked")
+        res.send(upload(req.body.title, `./temp/${artwork.name}`))
     }else{
         res.send("bruuh")
     }
