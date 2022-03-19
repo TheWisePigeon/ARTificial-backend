@@ -10,23 +10,18 @@ app.use(fileUpload({
 }))
 
 
-//databse stuff
-// const dbString = `mongodb+srv://${secrets.dbUser}:${secrets.password}@artificial.5ha3m.mongodb.net/artificial?retryWrites=true&w=majority`
-// mongoose.connect(dbString, { useNewUrlParser: true } )
-// const artworkSchema = new mongoose.Schema({
-//     title: String,
-//     desc: String,
-//     src: String,
+//database stuff
+const dbString = `mongodb+srv://${secrets.dbUser}:${secrets.password}@artificial.5ha3m.mongodb.net/artificial?retryWrites=true&w=majority`
+mongoose.connect(dbString, { useNewUrlParser: true } )
+const artworkSchema = new mongoose.Schema({
+    title: String,
+    desc: String,
+    src: String,
 
-// })
+})
 
-// const Artwork = mongoose.model("Artwork", artworkSchema)
-// const artwork = new Artwork({
-//     title: "test",
-//     desc: "bruh",
-//     src: "bruhruuh"
-// })
-// artwork.save()
+const Artwork = mongoose.model("Artwork", artworkSchema)
+
 
 app.use(bp.urlencoded({
     extended: true
@@ -46,15 +41,23 @@ app.get('/', (req, res) => {
         res.sendFile(__dirname + "/pages/index.html")
     })
     .post('/', async (req, res) => {
+        let obj
         if (req.files) {
             let artwork = req.files.artwork
             artwork.mv(__dirname + "/temp/" + artwork.name)
             cloudinary.v2.uploader.upload(`./temp/${artwork.name}`, {
                 public_id: req.body.title
             }, function (error, result) {
+                const art = new Artwork({
+                    title: req.body.title,
+                    desc: req.body.desc,
+                    src: result.secure_url
+                })
+                art.save()
                 res.send(result)
-            
+                
             })
+            
         }
 
     })
@@ -63,3 +66,4 @@ const port = process.env.PORT || 5000
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
 })
+
