@@ -1,6 +1,7 @@
 const express = require('express')
 const bp = require('body-parser')
 const cloudinary = require('cloudinary')
+const formidable = require('formidable')
 const secrets = require('./secrets/secrets')
 const mongoose = require('mongoose')
 const app = express()
@@ -32,9 +33,9 @@ cloudinary.config({
     api_secret: secrets.api_secret
 });
 
-function upload(title, url) {
+async function upload(title, url) {
     cloudinary.v2.uploader.upload(url, { public_id: title }, function (error, result) {
-        console.log(result);
+        return await result;
     })
 }
 
@@ -46,9 +47,7 @@ function get(title) {
 app.get('/', (req, res)=>{
     res.sendFile(__dirname + "/pages/index.html")
 })
-
-
-app.post('/upload', (req, res)=>{
+.post('/', (req, res)=>{
 
 })
 const port = process.env.PORT||5000
