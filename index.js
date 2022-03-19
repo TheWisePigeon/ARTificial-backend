@@ -5,7 +5,9 @@ const fileUpload = require('express-fileupload')
 const secrets = require('./secrets/secrets')
 const mongoose = require('mongoose')
 const app = express()
-app.use(fileUpload({ createParentPath: true }))
+app.use(fileUpload({
+    createParentPath: true
+}))
 
 
 //databse stuff
@@ -26,7 +28,9 @@ app.use(fileUpload({ createParentPath: true }))
 // })
 // artwork.save()
 
-app.use(bp.urlencoded({ extended: true }))
+app.use(bp.urlencoded({
+    extended: true
+}))
 
 cloudinary.config({
     cloud_name: 'dbeaywnzl',
@@ -34,37 +38,28 @@ cloudinary.config({
     api_secret: secrets.api_secret
 });
 
-async function upload(title, url) {
-    cloudinary.v2.uploader.upload(url, { public_id: title }, function (error, result) {
-        if(error){
-            return error
-        }else{
-            return result
-        }
-        
+
+
+
+
+app.get('/', (req, res) => {
+        res.sendFile(__dirname + "/pages/index.html")
     })
-}
+    .post('/', async (req, res) => {
+        if (req.files) {
+            let artwork = req.files.artwork
+            artwork.mv(__dirname + "/temp/" + artwork.name)
+            cloudinary.v2.uploader.upload(`./temp/${artwork.name}`, {
+                public_id: req.body.title
+            }, function (error, result) {
+                res.send(result)
+            
+            })
+        }
 
-function get(title) {
-    
-}
+    })
+const port = process.env.PORT || 5000
 
-
-app.get('/', (req, res)=>{
-    res.sendFile(__dirname + "/pages/index.html")
-})
-.post('/', async (req, res)=>{
-    if (req.files) {
-        let artwork = req.files.artwork
-        artwork.mv(__dirname + "/temp/" + artwork.name)
-        res.send(upload(req.body.title, `./temp/${artwork.name}`))
-    }else{
-        res.send("bruuh")
-    }
-
-})
-const port = process.env.PORT||5000
-
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log(`App listening on port ${port}`);
 })
