@@ -1,8 +1,8 @@
 const express = require('express')
+const secrets = require('./secrets')
 const bp = require('body-parser')
 const cloudinary = require('cloudinary')
 const fs = require('fs')
-const dotenv = require('dotenv')
 const fileUpload = require('express-fileupload')
 const mongoose = require('mongoose')
 const app = express()
@@ -12,7 +12,7 @@ app.use(fileUpload({
 
 
 //database stuff
-const dbString = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@artificial.5ha3m.mongodb.net/artificial?retryWrites=true&w=majority`
+const dbString = `mongodb+srv://${secrets.DB_USER}:${secrets.DB_PASSWORD}@artificial.5ha3m.mongodb.net/artificial?retryWrites=true&w=majority`
 mongoose.connect(dbString, { useNewUrlParser: true } )
 const artworkSchema = new mongoose.Schema({
     title: String,
@@ -30,8 +30,8 @@ app.use(bp.urlencoded({
 
 cloudinary.config({
     cloud_name: 'dbeaywnzl',
-    api_key: process.env.API_KEY,
-    api_secret: process.env.API_SECRET
+    api_key: secrets.API_KEY,
+    api_secret: secrets.API_SECRET
 });
 
 
@@ -68,9 +68,9 @@ app.get('/', (req, res) => {
         }
 
     })
-//const port = process.env.PORT || 5000
+const port = process.env.PORT || 5000
 
-app.listen(process.env.PORT, () => {
-    console.log(`App listening on port `);
+app.listen(port, () => {
+    console.log(`App listening on port ${port}`);
 })
 
