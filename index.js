@@ -2,7 +2,7 @@ const express = require('express')
 const bp = require('body-parser')
 const cloudinary = require('cloudinary')
 const fs = require('fs')
-const dotenv = require('dotenv').config()
+const dotenv = require('dotenv')
 const fileUpload = require('express-fileupload')
 const mongoose = require('mongoose')
 const app = express()
@@ -68,9 +68,9 @@ app.get('/', (req, res) => {
         }
 
     })
-const port = process.env.PORT || 5000
+//const port = process.env.PORT || 5000
 
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
     console.log(`App listening on port ${port}`);
 })
 
