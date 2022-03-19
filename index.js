@@ -1,6 +1,7 @@
 const express = require('express')
 const bp = require('body-parser')
 const cloudinary = require('cloudinary')
+const fs = require('fs')
 const fileUpload = require('express-fileupload')
 const secrets = require('./secrets/secrets')
 const mongoose = require('mongoose')
@@ -54,6 +55,12 @@ app.get('/', (req, res) => {
                     src: result.secure_url
                 })
                 art.save()
+                fs.unlink(__dirname + `/temp/${artwork.name}`, (err)=>{
+                    if (err){
+                        console.log(err);
+                    }
+                    console.log("File deleted successfully");
+                })
                 res.send(result)
                 
             })
