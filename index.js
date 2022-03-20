@@ -1,5 +1,6 @@
 const express = require('express')
 const secrets = require('./secrets')
+const cors = require('cors')
 const bp = require('body-parser')
 const cloudinary = require('cloudinary')
 const fs = require('fs')
@@ -23,7 +24,7 @@ const artworkSchema = new mongoose.Schema({
 
 const Artwork = mongoose.model("Artwork", artworkSchema)
 
-
+app.use(cors())
 app.use(bp.urlencoded({
     extended: true
 }))
